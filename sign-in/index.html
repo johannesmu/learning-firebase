@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Fire Sign In Test</title>
+    <style>
+      .container{
+        max-width: 480px;
+        margin:0 auto;
+      }
+      #signup-form{
+        max-width: 400px;
+        margin:0 auto;
+      }
+      label{
+        display: block;
+        padding:5px;
+      }
+      input{
+        display: block;
+        width:100%;
+        padding:10px;
+      }
+      #message{
+        color:green;
+      }
+      button{
+        margin-top: 20px;
+        padding:12px;
+        border:1px solid black;
+        border-radius:4px;
+      }
+    </style>
+    
+  </head>
+  <body>
+    <div class="container">
+      <form id="signin-form">
+        <h2>Sign in to your account</h2>
+        <label>Email</label>
+        <input type="email" name="email" id="email">
+        <label>Password</label>
+        <input type="password" name="password" id="password">
+        <button type="submit">Sign In</button>
+      </form>
+      <div >
+        <input type="text" readonly id="message">
+      </div>
+    </div>
+<!--    Load Firebase Library-->
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyDQOMPrV3FfAHRe7q96k_BpbX3Cafhz0KE",
+        authDomain: "todo-test-7fe87.firebaseapp.com",
+        databaseURL: "https://todo-test-7fe87.firebaseio.com",
+        projectId: "todo-test-7fe87",
+        storageBucket: "todo-test-7fe87.appspot.com",
+        messagingSenderId: "415683205056"
+      };
+      firebase.initializeApp(config);
+      
+      //---app logic
+      //get a reference to the signup form
+//      let signup = document.getElementById('signup-form');
+//      //add a listener to the form
+//      signup.addEventListener('submit',getFormData);
+//      function getFormData(event){
+//        //stop the form from refreshing the page
+//        event.preventDefault();
+//        //get data from form
+//        var data = new FormData(event.target);
+//        //sign user up with firebase
+//        firebase.auth().createUserWithEmailAndPassword(data.get('email'), data.get('password')).catch(function(error) {
+//          // Handle Errors here.
+//          var errorCode = error.code;
+//          var errorMessage = error.message;
+//          console.log(errorMessage);
+//        });
+//      }
+      
+      //get a reference to the sign in form
+      let signin = document.getElementById('signin-form');
+      signin.addEventListener('submit',signUserIn);
+      function signUserIn(event){
+        event.preventDefault();
+        var signindata = new FormData(event.target);
+        firebase.auth().signInWithEmailAndPassword(signindata.get('email'),signindata.get('password'))
+          .catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          console.log(errorMessage);
+        });
+      }
+      
+      firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            // User is signed in.
+            document.getElementById('message').value = "Hello "+user.email;
+            var displayName = user.displayName;
+            var email = user.email;
+            var emailVerified = user.emailVerified;
+            var photoURL = user.photoURL;
+            var isAnonymous = user.isAnonymous;
+            var uid = user.uid;
+            var providerData = user.providerData;
+            // ...
+          } else {
+            // User is signed out.
+            // ...
+          }
+       });
+
+    </script>
+  </body>
+</html>
