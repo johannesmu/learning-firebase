@@ -1,0 +1,56 @@
+body{
+	margin: 0;
+	font-family: arial,sans-serif;
+}
+.navigation{
+	background:#eeeeee;
+}
+.navigation ul{
+	display: flex;
+	justify-content: center;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.navigation a{
+	text-decoration: none;
+	display: block;
+	padding:15px;
+	color:#333333;
+}
+.navigation a:hover{
+	background-color:#cccccc;
+}
+.container{
+	max-width: 960px;
+	margin:0 auto;
+}
+#signin-form{
+	max-width: 400px;
+	margin:0 auto;
+	overflow:hidden;
+	max-height: 300px;
+	transition: max-height 0.5s;
+}
+#signin-form.hide{
+	max-height: 0;
+}
+label{
+	display: block;
+	padding:5px;
+}
+input{
+	display: block;
+	width:100%;
+	padding:10px;
+	font-size:18px;
+}
+#message{
+	color:green;
+}
+button{
+	margin-top: 20px;
+	padding:12px;
+	border:1px solid black;
+	border-radius:4px;
+}
