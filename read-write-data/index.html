@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+	<head>
+		<title>To do app</title>
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+		<div class="app-view">
+			<header>
+				<div class="logo">G</div>
+				<ul id="app-navigation">
+					<li><a id="signinbtn" class="nav-button" href="#">Sign In</a></li>
+					<li><a id="signupbtn" class="nav-button" href="#">Sign Up</a></li>
+					<li><a id="logoutbtn" class="nav-button" href="#">Log Out</a></li>
+				</ul>
+			</header>
+			<div class="content">
+				<ul id="task-list"></ul>
+			</div>
+			<footer class="footer">
+				<form id="task-form">
+					<input id="task-input" name="task" type="text" placeholder="add a task">
+					<button id="add-button">Add</button>
+				</form>
+			</footer>
+		</div>
+		<div class="overlay" id="signup">
+			<form id="signup-form" class="credentials">
+				<h2>Sign up</h2>
+				<label for="input">Email</label>
+				<input type="email" id="signup-email" name="signup-email" placeholder="your email">
+				<label for="signup-password">Password</label>
+				<input type="password" id="signup-password" name="signup-password" placeholder="password">
+				<button type="submit" name="signup-submit">Sign up</button>
+			</form>
+		</div>
+		<div class="overlay" id="signin">
+			<form id="signin-form" class="credentials">
+				<h2>Sign in</h2>
+				<label for="signin-email">Email</label>
+				<input type="email" name="signin-email" placeholder="your email">
+				<label for="signin-password">Password</label>
+				<input type="password" id="signin-password" name="signin-password" placeholder="password">
+				<button type="submit" name="signin-submit">Sign in</button>
+			</form>
+		</div>
+	</body>
+</html>

@@ -57,7 +57,7 @@ function addTask(event){
 	//stop form from refreshing page by cancelling the event default
 	event.preventDefault();
 	//get the value of the input
-	let taskname = document.getElementById('task-input').value;
+	let task = document.getElementById('task-input').value;
 	//empty the form
 	event.target.reset();
 	//create id for task using timestamp
@@ -65,10 +65,29 @@ function addTask(event){
 	//write data to firebase using firebase.database object
 	//write tasks to "tasks" branch, use userid as key and taskid as key
 	//for each task
-	firebase.database().ref('tasks/' + app.userid +'/'+ taskid).set({
-		taskname: taskname,
-		status:0
+	let dataref = 'tasks/' + app.userid + '/' + taskid;
+	let dataobj = {taskname: task, status: 0};
+	writeData(dataref,dataobj);
+}
+
+function writeData(ref,obj){
+	firebase.database().ref(ref).set(obj)
+	.then(function(result){
+		console.log(result);
 	});
+}
+
+function readData(id){
+	firebase.database().ref('tasks/'+id).once('value')
+	.then(function(snapshot) {
+		let tasks = snapshot.val();
+		let taskcount = Object.keys(tasks).length;
+		console.log(Object.keys(tasks));
+	});
+}
+
+function renderData(dataobj){
+
 }
 
 //firebase observer for user state
@@ -86,7 +105,9 @@ firebase.auth().onAuthStateChanged(function(user) {
 		document.getElementById('loginbtn').style.visibility = 'hidden';
 		//show the logout button
 		document.getElementById('logoutbtn').style.visibility = 'visible';
-	} else {
+		readData(app.userid);
+	} 
+	else {
 		// User is signed out.
 		// put things to do here when the user is signed out
 		app.id = '';
