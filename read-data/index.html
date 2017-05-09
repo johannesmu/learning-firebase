@@ -24,6 +24,7 @@
 				</form>
 			</footer>
 		</div>
+<!--        sign up form with overlay-->
 		<div class="overlay" id="signup">
 			<form id="signup-form" class="credentials">
 				<h2>Sign up</h2>
@@ -34,6 +35,7 @@
 				<button type="submit" name="signup-submit">Sign up</button>
 			</form>
 		</div>
+<!--        sign in form with overlay-->
 		<div class="overlay" id="signin">
 			<form id="signin-form" class="credentials">
 				<h2>Sign in</h2>
@@ -44,5 +46,22 @@
 				<button type="submit" name="signin-submit">Sign in</button>
 			</form>
 		</div>
+        <!--    Load Firebase Library-->
+        <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js">
+            </script>
+        <script>
+          // Initialize Firebase
+          var config = {
+            apiKey: "AIzaSyDQOMPrV3FfAHRe7q96k_BpbX3Cafhz0KE",
+            authDomain: "todo-test-7fe87.firebaseapp.com",
+            databaseURL: "https://todo-test-7fe87.firebaseio.com",
+            projectId: "todo-test-7fe87",
+            storageBucket: "todo-test-7fe87.appspot.com",
+            messagingSenderId: "415683205056"
+          };
+          firebase.initializeApp(config);
+        </script>
+<!--		Load our Javascript-->
+		<script src="script.js"></script>
 	</body>
 </html>
