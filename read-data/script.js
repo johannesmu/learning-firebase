@@ -37,6 +37,21 @@ function viewController() {
   }
 }
 
+class Forms{
+	constructor(formsclass){
+		this.forms = document.getElementsByClassName(formsclass);
+		let len = forms.length;
+		let i=0;
+		for(i=0;i<len;i++){
+			
+		}
+	}
+	toggle(){
+	}
+	hide(){
+	}
+}
+
 function menuController(){
   //if user is logged in
   if(app.userid){

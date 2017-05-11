@@ -59,6 +59,9 @@ header {
   height: 100%;
   box-sizing: border-box;
 }
+.nav-button{
+	color:#333333;
+}
 
 .content {
   background-color: aliceblue;
@@ -105,33 +108,39 @@ header {
   min-width: 360px;
   margin: 0 auto;
   background-color: white;
-  padding: 22px 15px;
+  padding: 0 0 10px 0px;
   font-size: 18px;
   border-radius:10px;
-  color:#666;
+  color:#888;
+	overflow:hidden;
 }
 .credentials h2{
   text-align: center;
   margin:0;
-  padding:10px;
+  padding:22px 10px 22px 10px;
   font-size:20px;
+	background-color:#dddddd;
+	font-weight: 200;
+	color:#666666;
 }
-.crendentials-content{
-  
+.credentials-content{
+  margin:0 10px;
+	box-sizing: border-box;
 }
 .credentials label {
   display: block;
   width: 100%;
-  margin: 15px 0;
+  margin: 15px 0 5px 0;
   box-sizing: border-box;
 }
 
 .credentials input {
   display: block;
   width: 100%;
-  margin: 10px 0;
-  padding: 5px;
+  margin: 5px 0 15px 0;
+  padding: 10px 5px;
   font-size: 18px;
+	border:1px solid #cccccc;
   border-radius:4px;
   box-sizing: border-box;
 }
@@ -139,14 +148,21 @@ header {
 .credentials button {
   display: block;
   width: 150px;
+	font-size:16px;
   margin: 0 auto;
   padding: 12px;
-  background-color: black;
-  color: white;
-  border: 1px solid black;
-  border-radius: 6px;
+  background-color: linear-gradient(#cccccc,#dddddd);
+  color: #333333;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
 }
-
+.alt-link{
+	display: block;
+	margin-top:20px;
+	padding:10px;
+	margin:5px 0;
+	text-decoration: none;
+}
 .hide {
   display: none;
 }
