@@ -43,12 +43,21 @@ header {
   list-style: none;
   margin: 0;
   padding: 0;
+  color:#333;
 }
 
-#app-navigation a {
-  text-decoration: none;
-  display: block;
+#app-navigation li{
+  height: inherit;
+}
+
+#app-navigation a{
+  text-decoration: none;\
+  color:inherit;
+  display: flex;
+  align-items: center;
   padding: 12px;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .content {
@@ -99,12 +108,16 @@ header {
   padding: 22px 15px;
   font-size: 18px;
   border-radius:10px;
+  color:#666;
 }
 .credentials h2{
   text-align: center;
   margin:0;
   padding:10px;
   font-size:20px;
+}
+.crendentials-content{
+  
 }
 .credentials label {
   display: block;

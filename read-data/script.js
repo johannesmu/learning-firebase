@@ -1,7 +1,9 @@
-//setup global object to store userid and email
+//setup global object to store userid and email and other global values
 var app = {
   userid: '',
-  useremail: ''
+  useremail: '',
+  useraccountstatus:'',
+  view:''
 }
 //firebase observer for user state
 firebase.auth().onAuthStateChanged(function (user) {
@@ -10,6 +12,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     var uid = user.uid;
     app.userid = uid;
     app.useremail = user.email;
+    viewController();
 
   } else {
     // User is signed out.
@@ -18,31 +21,50 @@ firebase.auth().onAuthStateChanged(function (user) {
     app.email = '';
   }
 });
-//form controller
-function controlForms() {
-  //check if user is logged in
+
+//view controller
+function viewController() {
+  //if user is logged in
   if (app.userid) {
     //hide sign in form
+    //hide sign up form
+  }
+  //if user is not logged in
+  else{
+    //show sign in form if user has logged in before
+    //using useraccountstatus and localstorage
+    //show sign up if user has not logged in before
+  }
+}
 
+function menuController(){
+  //if user is logged in
+  if(app.userid){
+    //hide login and sign up
+  }
+  else{
+//    show login and/or signup
   }
 }
 
 window.addEventListener('load', onWindowLoad);
 
 function onWindowLoad() {
-  //get a reference to the sign in form
-  let signin = document.getElementById('signin');
+  //when window loads bind ui to listeners
+  bindUI();
+}
+
+function bindUI(){
+  //get a reference to the sign in form and store it in global app object
+  //for easy access
+  let app.signin = document.getElementById('signin');
   //listen to submit event from the login form
-  signin.addEventListener('submit', signUserIn);
+  app.signin.addEventListener('submit', signUserIn);
   
   //get a reference to the sign up form
-  let signup = document.getElementById('signup');
+  let app.signup = document.getElementById('signup');
   //listen to submti event from the signup form
-  signup.addEventListener('submit',signUserUp);
-
-  //add a listener for the sign out button
-  let logoutbtn = document.getElementById('logoutbtn');
-  logoutbtn.addEventListener('click', logUserOut);
+  app.signup.addEventListener('submit',signUserUp);
 
   //add a listener for the task form
   let taskform = document.getElementById('task-form');
