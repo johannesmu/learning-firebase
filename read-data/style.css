@@ -27,6 +27,11 @@ header {
   min-height: 50px;
 }
 
+.notifications{
+  display:flex;
+  align-items: center;
+}
+
 .logo {
   display: flex;
   justify-content: center;
