@@ -34,7 +34,7 @@ header {
   width: 48px;
   height: 48px;
   color: white;
-  background-color: black;
+  background-color: hsl(33,90%,60%);
   margin: 5px 0;
 }
 
@@ -50,7 +50,7 @@ header {
   height: inherit;
 }
 
-#app-navigation a{
+.nav-button{
   text-decoration: none;\
   color:inherit;
   display: flex;
@@ -58,9 +58,7 @@ header {
   padding: 12px;
   height: 100%;
   box-sizing: border-box;
-}
-.nav-button{
-	color:#333333;
+  color:#333333;
 }
 
 .content {

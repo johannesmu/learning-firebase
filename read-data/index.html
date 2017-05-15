@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>To do app</title>
+  <title>Group Tasker</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -10,12 +10,10 @@
   <div class="app-view">
     <header>
       <div class="logo">G</div>
-      <div class="notifications">
+      <div class="notifications" id="message">
 
       </div>
       <ul id="app-navigation">
-        <li><a id="signinbtn" class="nav-button" href="#">Sign In</a></li>
-        <li><a id="signupbtn" class="nav-button" href="#">Sign Up</a></li>
         <li><a id="logoutbtn" class="nav-button" href="#">Log Out</a></li>
       </ul>
     </header>
@@ -30,7 +28,7 @@
     </footer>
   </div>
   <!--        sign up form with overlay-->
-  <div class="overlay auth-form" id="signup">
+  <div class="overlay auth-ui hide" id="signup">
     <form id="signup-form" class="credentials">
       <h2 class="credentials-header">Sign up for an account</h2>
       <div class="credentials-content">
@@ -41,26 +39,28 @@
         <label for="signup-password">Password</label>
         <input type="password" id="signup-password" name="signup-password" placeholder="minimum six characters">
         <button type="submit" name="signup-submit">Sign up</button>
-				<div class="alt-link">
-					Already have an account?
-					<a href="#" class="form-toggle" data-target="signin">Sign in here</a>
-				</div>
+        <div class="alt-link">
+            Already have an account?
+            <a href="#" class="form-toggle" data-target="signin">Sign in here</a>
+        </div>
       </div>
     </form>
   </div>
   <!--        sign in form with overlay-->
-  <div class="overlay auth-form hide" id="signin">
+  <div class="overlay auth-ui hide" id="signin">
     <form id="signin-form" class="credentials">
-      <h2>Sign in</h2>
-      <label for="signin-email">Email</label>
-      <input type="email" id="signin-email" name="signin-email" placeholder="your email">
-      <label for="signin-password">Password</label>
-      <input type="password" id="signin-password" name="signin-password" placeholder="password">
-      <button type="submit" name="signin-submit">Sign in</button>
-			<div class="alt-link">
-				Need an account?
-				<a href="#" class="form-toggle" data-target="signup">Sign up here</a>
-			</div>
+      <h2 class="credentials-header">Sign in</h2>
+      <div class="credentials-content">
+        <label for="signin-email">Email</label>
+        <input type="email" id="signin-email" name="signin-email" placeholder="your email">
+        <label for="signin-password">Password</label>
+        <input type="password" id="signin-password" name="signin-password" placeholder="password">
+        <button type="submit" name="signin-submit">Sign in</button>
+        <div class="alt-link">
+            Need an account?
+            <a href="#" class="form-toggle" data-target="signup">Sign up here</a>
+        </div>
+      </div>
     </form>
   </div>
   <!--    Load Firebase Library-->

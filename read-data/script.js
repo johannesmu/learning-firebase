@@ -6,59 +6,41 @@ var app = {
   view:''
 }
 //firebase observer for user state
-firebase.auth().onAuthStateChanged(function (user) {
-  if (user) {
-    // User is signed in.
-    var uid = user.uid;
-    app.userid = uid;
-    app.useremail = user.email;
-    viewController();
 
-  } else {
-    // User is signed out.
-    // put things to do here when the user is signed out
-    app.id = '';
-    app.email = '';
-  }
-});
 
-//view controller
-function viewController() {
-  //if user is logged in
-  if (app.userid) {
-    //hide sign in form
-    //hide sign up form
+function formController(){
+  if(app.userid){
+    //hide both forms
+    app.signin.classList.add('hide');
+    app.signup.classList.add('hide');
   }
-  //if user is not logged in
   else{
-    //show sign in form if user has logged in before
-    //using useraccountstatus and localstorage
-    //show sign up if user has not logged in before
+    app.signin.classList.remove('hide');
+    app.signup.classList.add('hide');
   }
 }
 
-class Forms{
-	constructor(formsclass){
-		this.forms = document.getElementsByClassName(formsclass);
-		let len = forms.length;
-		let i=0;
-		for(i=0;i<len;i++){
-			
-		}
-	}
-	toggle(){
-	}
-	hide(){
-	}
+function toggleForms(){
+  var forms = document.getElementsByClassName('auth-ui');
+  for(i=0;i<forms.length;i++){
+    if(forms[i].classList.contains('hide')){
+      forms[i].classList.remove('hide');
+    }
+    else{
+      forms[i].classList.add('hide');
+    }
+  }
 }
 
 function menuController(){
   //if user is logged in
   if(app.userid){
-    //hide login and sign up
+    //show logout link
+    document.getElementById('logoutbtn').classList.remove('hide');
   }
   else{
-//    show login and/or signup
+    //hide logout link
+    document.getElementById('logoutbtn').classList.add('hide');
   }
 }
 
@@ -72,21 +54,51 @@ function onWindowLoad() {
 function bindUI(){
   //get a reference to the sign in form and store it in global app object
   //for easy access
-  let app.signin = document.getElementById('signin');
+  app.signin = document.getElementById('signin');
   //listen to submit event from the login form
   app.signin.addEventListener('submit', signUserIn);
   
   //get a reference to the sign up form
-  let app.signup = document.getElementById('signup');
+  app.signup = document.getElementById('signup');
   //listen to submti event from the signup form
   app.signup.addEventListener('submit',signUserUp);
+  
+  //get a reference to the logout button
+  app.logout = document.getElementById('logoutbtn');
+  app.logout.addEventListener('click',logUserOut);
 
   //add a listener for the task form
   let taskform = document.getElementById('task-form');
   taskform.addEventListener('submit', addTask);
+  
+  //add listener to toggle forms
+  let formtoggles = document.getElementsByClassName('auth-ui');
+  for(t=0;t<formtoggles.length;t++){
+    link = formtoggles[t].getElementsByClassName('form-toggle');
+    link[0].addEventListener('click',toggleForms);
+  }
+  
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      // User is signed in.
+      app.userid = user.uid;
+      app.useremail = user.email;
+      formController();
+      menuController();
+
+    } else {
+      // User is signed out.
+      // put things to do here when the user is signed out
+      app.userid = '';
+      app.email = '';
+      formController();
+      menuController();
+    }
+  });
 }
 
 function signUserUp(event){
+  //stop the form from refreshing page by cancelling the event
   event.preventDefault();
   //get value of email from sign up form
   let email = document.getElementById('signup-email').value;
@@ -94,7 +106,9 @@ function signUserUp(event){
   let password = document.getElementById('signup-password').value;
   //username
 }
+
 function signUserIn(event) {
+  //stop the form from refreshing page by cancelling the event
   event.preventDefault();
   //get value of email from sign in form
   let email = document.getElementById('signin-email').value;
@@ -112,11 +126,7 @@ function signUserIn(event) {
 
 function logUserOut() {
   firebase.auth().signOut().then(function () {
-    // user is signed out
-    //show login button
-    document.getElementById('loginbtn').style.visibility = 'visible';
-    //hide logout button
-    document.getElementById('logoutbtn').style.visibility = 'hidden';
+    
   }).catch(function (error) {
     notifyUser(error.message);
   });
