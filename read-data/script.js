@@ -2,11 +2,10 @@
 var app = {
   userid: '',
   useremail: '',
+  username: '',
   useraccountstatus: '',
   view: ''
 }
-//firebase observer for user state
-
 
 function formController() {
   if (app.userid) {
@@ -44,25 +43,29 @@ function menuController() {
 }
 
 function toggleProfile(){
-  console.log("called");
   if(app.userid){
     if(app.profile.classList.contains('hide')){
       app.profile.classList.remove('hide');
-      console.log('shown');
+      getProfileData();
+      document.getElementById('profile-close').addEventListener('click',toggleProfile);
     }
     else{
       app.profile.classList.add('hide');
-      console.log('hidden');
     }
   }
  
 }
 
 function getProfileData(){
-  
+  if(app.userid){
+    document.getElementById('profile-email').value = app.useremail;
+    document.getElementById('profile-password').value = 'password';
+    document.getElementById('profile-name').value = app.username;
+  }
 }
 
 window.addEventListener('load', onWindowLoad);
+
 
 function onWindowLoad() {
   //when window loads bind ui to listeners
@@ -109,6 +112,8 @@ function bindUI() {
       app.useremail = user.email;
       formController();
       menuController();
+      getUserName(user.uid);
+      readTasks(user.uid);
 
     } else {
       // User is signed out.
@@ -117,6 +122,7 @@ function bindUI() {
       app.email = '';
       formController();
       menuController();
+      emptyTasks();
     }
   });
 }
@@ -142,6 +148,8 @@ function signUserUp(event) {
       var obj = {
         name: username
       };
+      //set username in app
+      app.username = username;
       writeData(ref, obj);
     })
     .catch(function (error) {
@@ -166,12 +174,7 @@ function signUserIn(event) {
       //get user id
       var userid = firebase.auth().currentUser.uid;
       //get user name
-      firebase.database().ref('users/' + userid).once('value')
-        .then(function (snapshot) {
-          var username = snapshot.val().name;
-          //greet user by printing username in notifications area
-          notifyUser("Hello " + username);
-        });
+      getUserName(userid);
       //get tasks
       readTasks(userid);
     })
@@ -183,11 +186,21 @@ function signUserIn(event) {
 function logUserOut() {
   firebase.auth().signOut().then(function () {
     notifyUser('');
+    emptyTasks();
   }).catch(function (error) {
     notifyUser(error.message);
   });
 }
-
+function getUserName(userid){
+  firebase.database().ref('users/' + userid).once('value')
+  .then(function (snapshot) {
+    var username = snapshot.val().name;
+    //greet user by printing username in notifications area
+    notifyUser("Hello " + username);
+    //set username in app
+    app.username = username;
+  });
+}
 
 function notifyUser(msg) {
   document.getElementById('message').innerHTML = msg;
@@ -234,6 +247,8 @@ function readTasks(id) {
 }
 
 function renderTasks(dataobj) {
+  //empty task list
+  emptyTasks();
   //get the length of tasks
   var count = Object.keys(dataobj).length;
   var keys = Object.keys(dataobj);
@@ -242,8 +257,20 @@ function renderTasks(dataobj) {
   var i=0;
   for(i=0;i<count;i++){
     var task = keys[i];
-    console.log(task);
-    console.log(vals[i].taskname);
-    //console.log(dataobj.task.taskname);
+    //console.log(task);
+    //console.log(vals[i].taskname);
+    var name = vals[i].taskname;
+    var status = vals[i].status;
+    console.log(name +" / "+status);
+    //clone the template
+    var template = document.getElementById('task-template').content.cloneNode(true);
+    template.querySelector('li').innerText = name;
+    template.querySelector('li').setAttribute('id',task);
+    template.querySelector('li').setAttribute('data-status',status);
+    document.getElementById("task-list").appendChild(template);
   }
+}
+function emptyTasks(){
+  //empty the task list
+  document.getElementById('task-list').innerHTML='';
 }

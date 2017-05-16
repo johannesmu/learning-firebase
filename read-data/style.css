@@ -30,6 +30,7 @@ header {
 .notifications{
   display:flex;
   align-items: center;
+  color:#666;
 }
 
 .logo {
@@ -108,7 +109,7 @@ header {
 
 .credentials {
   max-width: 480px;
-  min-width: 360px;
+  min-width: 340px;
   margin: 0 auto;
   background-color: white;
   padding: 0 0 10px 0px;
@@ -158,6 +159,14 @@ header {
   color: #333333;
   border: 1px solid #dddddd;
   border-radius: 4px;
+}
+.close::after{
+  content:"\00d7";
+  margin-left:auto;
+  margin-right:0;
+  display:inline-block;
+  padding:5px;
+  float:right;
 }
 .alt-link{
 	display: block;
