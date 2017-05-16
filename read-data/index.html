@@ -1,70 +1,107 @@
 <!doctype html>
 <html>
-  <head>
-    <title>To do app</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-    <div class="app-view">
-      <header>
-        <div class="logo">G</div>
-        <div class="notify" id="message">
-          
-        </div>
-        <ul id="app-navigation">
-          <li><a id="signinbtn" class="nav-button" href="#">Sign In</a></li>
-          <li><a id="signupbtn" class="nav-button" href="#">Sign Up</a></li>
-          <li><a id="logoutbtn" class="nav-button" href="#">Log Out</a></li>
-        </ul>
-      </header>
-      <div class="content">
-        <ul id="task-list"></ul>
+<head>
+  <title>Group Tasker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="app-view">
+    <header>
+      <div class="logo">G</div>
+      <div class="notifications" id="message">
+
       </div>
-      <footer class="footer">
-        <form id="task-form">
-          <input id="task-input" name="task" type="text" placeholder="add a task">
-          <button id="add-button">Add</button>
-        </form>
-      </footer>
+      <ul id="app-navigation">
+        <li><a id="profilebtn" class="nav-button" href="#">Profile</a></li>
+        <li><a id="logoutbtn" class="nav-button" href="#">Log Out</a></li>
+      </ul>
+    </header>
+    <div class="content">
+      <ul id="task-list"></ul>
     </div>
-<!--        sign up form with overlay-->
-    <div class="overlay" id="signup hide">
-      <form id="signup-form" class="credentials">
-        <h2>Sign up</h2>
-        <label for="input">Email</label>
-        <input type="email" id="signup-email" name="signup-email" placeholder="your email">
-        <label for="signup-password">Password</label>
-        <input type="password" id="signup-password" name="signup-password" placeholder="password">
-        <button type="submit" name="signup-submit">Sign up</button>
+    <footer class="footer">
+      <form id="task-form">
+        <input id="task-input" name="task" type="text" placeholder="add a task">
+        <button id="add-button">Add</button>
       </form>
-    </div>
-<!--        sign in form with overlay-->
-    <div class="overlay" id="signin hide">
-      <form id="signin-form" class="credentials">
-        <h2>Sign in</h2>
+    </footer>
+  </div>
+  <!--        sign up form with overlay-->
+  <div class="overlay auth-ui hide" id="signup">
+    <form id="signup-form" class="credentials">
+      <h2 class="credentials-header">Sign up for an account</h2>
+      <div class="credentials-content">
+        <label for="input">Username</label>
+        <input type="text" id="signup-name" name="signup-name" placeholder="username">
+        <label for="input">Email</label>
+        <input type="email" id="signup-email" name="signup-email" placeholder="someone@domain.com">
+        <label for="signup-password">Password</label>
+        <input type="password" id="signup-password" name="signup-password" placeholder="minimum six characters">
+        <button type="submit" name="signup-submit">Sign up</button>
+        <div class="alt-link">
+            Already have an account?
+            <a href="#" class="form-toggle" data-target="signin">Sign in here</a>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!--        sign in form with overlay-->
+  <div class="overlay auth-ui hide" id="signin">
+    <form id="signin-form" class="credentials">
+      <h2 class="credentials-header">Sign in</h2>
+      <div class="credentials-content">
         <label for="signin-email">Email</label>
-        <input type="email" name="signin-email" id="signin-email" placeholder="your email">
+        <input type="email" id="signin-email" name="signin-email" placeholder="your email">
         <label for="signin-password">Password</label>
         <input type="password" id="signin-password" name="signin-password" placeholder="password">
         <button type="submit" name="signin-submit">Sign in</button>
-      </form>
-    </div>
-        <!--    Load Firebase Library-->
-        <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js">
-            </script>
-        <script>
-          // Initialize Firebase
-          var config = {
-            apiKey: "AIzaSyDQOMPrV3FfAHRe7q96k_BpbX3Cafhz0KE",
-            authDomain: "todo-test-7fe87.firebaseapp.com",
-            databaseURL: "https://todo-test-7fe87.firebaseio.com",
-            projectId: "todo-test-7fe87",
-            storageBucket: "todo-test-7fe87.appspot.com",
-            messagingSenderId: "415683205056"
-          };
-          firebase.initializeApp(config);
-        </script>
-<!--		Load our Javascript-->
-    <script src="script.js"></script>
-  </body>
+        <div class="alt-link">
+            Need an account?
+            <a href="#" class="form-toggle" data-target="signup">Sign up here</a>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="overlay profile-ui hide" id="profile">
+    <form id="profile-form" class="credentials">
+      <h2 class="credentials-header">Profile</h2>
+      <div class="credentials-content">
+        <label for="profile-email">Email</label>
+        <input type="email" id="profile-email" name="profile-email" placeholder="new email address">
+        <label for="profile-name">Username</label>
+        <input type="text" id="profile-name" name="profile-name" placeholder="new username">
+        <label for="profile-password">Password</label>
+        <input type="password" id="profile-password" name="profile-password" placeholder="new password">
+        <button type="submit" name="profile-submit">Update</button>
+      </div>
+    </form>
+  </div>
+  <!--    Load Firebase Library-->
+  <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js">
+
+
+  </script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyDQOMPrV3FfAHRe7q96k_BpbX3Cafhz0KE",
+      authDomain: "todo-test-7fe87.firebaseapp.com",
+      databaseURL: "https://todo-test-7fe87.firebaseio.com",
+      projectId: "todo-test-7fe87",
+      storageBucket: "todo-test-7fe87.appspot.com",
+      messagingSenderId: "415683205056"
+    };
+    firebase.initializeApp(config);
+
+  </script>
+  <!--		Load our Javascript-->
+  <script src="script.js"></script>
+  
+<!--  Template for tasks-->
+  <template id="task-template">
+    <li id="" data-status=""></li>
+  </template>
+</body>
+
 </html>

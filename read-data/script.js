@@ -1,144 +1,249 @@
-//setup global object to store userid and email
+//setup global object to store userid and email and other global values
 var app = {
-    userid:'',
-    useremail:'',
-    signin:'',
-    signup:''
+  userid: '',
+  useremail: '',
+  useraccountstatus: '',
+  view: ''
 }
 //firebase observer for user state
-firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-        // User is signed in.
-        var uid = user.uid;
-        app.userid = uid;
-        app.useremail = user.email;
-        notifyUser(app.useremail);
-        controlNavigation();
-        controlForms();
-        readData(app.userid);
-    } 
-    else {
-        // User is signed out.
-        // put things to do here when the user is signed out
-        app.id = '';
-        app.email = '';
-        //show the login form
-        controlNavigation();
-        controlForms();
+
+
+function formController() {
+  if (app.userid) {
+    //hide both forms
+    app.signin.classList.add('hide');
+    app.signup.classList.add('hide');
+  } else {
+    app.signin.classList.remove('hide');
+    app.signup.classList.add('hide');
+  }
+}
+
+function toggleForms() {
+  var forms = document.getElementsByClassName('auth-ui');
+  for (i = 0; i < forms.length; i++) {
+    if (forms[i].classList.contains('hide')) {
+      forms[i].classList.remove('hide');
+    } else {
+      forms[i].classList.add('hide');
     }
- });
-//form controller
-function controlForms(){
-  //create form references
-  let signinui = document.getElementById('signin');
-  let signupui = document.getElementById('signup');
-  //check if user is logged in
-  if(app.userid){
-    signinui.classList.add('hide');
-    signupui.classList.add('hide');
-  }
-  else{
-    document.getElementById('signin').classList.remove('hide');
   }
 }
 
-//navigation controller
-function controlNavigation(){
-  if(app.userid){
-    document.getElementById('signinbtn').classList.add('hide');
-    document.getElementById('signupbtn').classList.add('hide');
+function menuController() {
+  //if user is logged in
+  if (app.userid) {
+    //show logout link
     document.getElementById('logoutbtn').classList.remove('hide');
-  }
-  else{
+    document.getElementById('profilebtn').classList.remove('hide');
+  } else {
+    //hide logout link
     document.getElementById('logoutbtn').classList.add('hide');
-    document.getElementById('signinbtn').classList.remove('hide');
-    document.getElementById('signupbtn').classList.remove('hide');
+    document.getElementById('profilebtn').classList.add('hide');
   }
 }
 
-window.addEventListener('load',onWindowLoad);
-function onWindowLoad(){
-    //get a reference to the sign in form
-    // let signin = document.getElementById('signin');
-    //listen to submit event from the login form
-    //signin.addEventListener('submit',signUserIn);
-    
-    //add a listener for the sign out button
-    // let logoutbtn = document.getElementById('logoutbtn');
-    // logoutbtn.addEventListener('click',logUserOut);
-    
-    // //add a listener for the task form
-    // let taskform = document.getElementById('task-form');
-    // taskform.addEventListener('submit',addTask);
+function toggleProfile(){
+  console.log("called");
+  if(app.userid){
+    if(app.profile.classList.contains('hide')){
+      app.profile.classList.remove('hide');
+      console.log('shown');
+    }
+    else{
+      app.profile.classList.add('hide');
+      console.log('hidden');
+    }
+  }
+ 
 }
 
-function signUserIn(event){
-    event.preventDefault();
-    //var signindata = new FormData(event.target);
-    //if on Safari, get form with
-    let email = document.getElementById('signin-email').value;
-    let password = document.getElementById('signin-password').value;
-    firebase.auth().signInWithEmailAndPassword(email,password)
-    .then(function(){
-        //empty the form
-        document.getElementById('signin-form').reset();
+function getProfileData(){
+  
+}
+
+window.addEventListener('load', onWindowLoad);
+
+function onWindowLoad() {
+  //when window loads bind ui to listeners
+  bindUI();
+}
+
+function bindUI() {
+  //get a reference to the sign in form and store it in global app object
+  //for easy access
+  app.signin = document.getElementById('signin');
+  //listen to submit event from the login form
+  app.signin.addEventListener('submit', signUserIn);
+
+  //get a reference to the sign up form
+  app.signup = document.getElementById('signup');
+  //listen to submit event from the signup form
+  app.signup.addEventListener('submit', signUserUp);
+  
+  //get a reference to the profile form
+  app.profile = document.getElementById('profile');
+  //get a reference to profile button
+  profilebtn = document.getElementById('profilebtn');
+  profilebtn.addEventListener('click',toggleProfile);
+
+  //get a reference to the logout button
+  app.logout = document.getElementById('logoutbtn');
+  app.logout.addEventListener('click', logUserOut);
+
+  //add a listener for the task form
+  var taskform = document.getElementById('task-form');
+  taskform.addEventListener('submit', addTask);
+
+  //add listener to toggle forms
+  var formtoggles = document.getElementsByClassName('auth-ui');
+  for (t = 0; t < formtoggles.length; t++) {
+    link = formtoggles[t].getElementsByClassName('form-toggle');
+    link[0].addEventListener('click', toggleForms);
+  }
+
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      // User is signed in.
+      app.userid = user.uid;
+      app.useremail = user.email;
+      formController();
+      menuController();
+
+    } else {
+      // User is signed out.
+      // put things to do here when the user is signed out
+      app.userid = '';
+      app.email = '';
+      formController();
+      menuController();
+    }
+  });
+}
+
+function signUserUp(event) {
+  //stop the form from refreshing page by cancelling the event
+  event.preventDefault();
+  //get value of email from sign up form
+  var email = document.getElementById('signup-email').value;
+  //get the password
+  var password = document.getElementById('signup-password').value;
+  //username
+  var username = document.getElementById('signup-name').value;
+  //sign user up with email and password
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then(function () {
+      //reset the form
+      event.target.reset();
+      //get the id of the user
+      var userid = firebase.auth().currentUser.uid;
+      //write username to database using user.id as key, under users branch
+      var ref = 'users/' + userid;
+      var obj = {
+        name: username
+      };
+      writeData(ref, obj);
     })
-    .catch(function(error){
-        notifyUser(error.message);
+    .catch(function (error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log(errorMessage);
     });
 }
 
-function logUserOut(){
-    firebase.auth().signOut().then(function() {
-        // user is signed out
-        //show login button
-        document.getElementById('loginbtn').style.visibility = 'visible';
-        //hide logout button
-        document.getElementById('logoutbtn').style.visibility = 'hidden';
-    }).catch(function(error) {
-        notifyUser(error.message);
+function signUserIn(event) {
+  //stop the form from refreshing page by cancelling the event
+  event.preventDefault();
+  //get value of email from sign in form
+  var email = document.getElementById('signin-email').value;
+  //get value of password from sign in form
+  var password = document.getElementById('signin-password').value;
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(function () {
+      //empty the form
+      document.getElementById('signin-form').reset();
+      //get user id
+      var userid = firebase.auth().currentUser.uid;
+      //get user name
+      firebase.database().ref('users/' + userid).once('value')
+        .then(function (snapshot) {
+          var username = snapshot.val().name;
+          //greet user by printing username in notifications area
+          notifyUser("Hello " + username);
+        });
+      //get tasks
+      readTasks(userid);
+    })
+    .catch(function (error) {
+      notifyUser(error.message);
     });
 }
 
-
-function notifyUser(msg){
-    document.getElementById('message').val = msg;
-}	
-
-function addTask(event){
-    //stop form from refreshing page by cancelling the event default
-    event.preventDefault();
-    //get the value of the input
-    let task = document.getElementById('task-input').value;
-    //empty the form
-    event.target.reset();
-    //create id for task using timestamp
-    let taskid = new Date().getTime();
-    //write data to firebase using firebase.database object
-    //write tasks to "tasks" branch, use userid as key and taskid as key
-    //for each task
-    let dataref = 'tasks/' + app.userid + '/' + taskid;
-    let dataobj = {taskname: task, status: 0};
-    writeData(dataref,dataobj);
+function logUserOut() {
+  firebase.auth().signOut().then(function () {
+    notifyUser('');
+  }).catch(function (error) {
+    notifyUser(error.message);
+  });
 }
 
-function writeData(ref,obj){
-    firebase.database().ref(ref).set(obj)
-    .then(function(result){
-        console.log(result);
+
+function notifyUser(msg) {
+  document.getElementById('message').innerHTML = msg;
+}
+
+function addTask(event) {
+  //stop form from refreshing page by cancelling the event default
+  event.preventDefault();
+  //get the value of the input
+  var task = document.getElementById('task-input').value;
+  //empty the form
+  event.target.reset();
+  //create id for task using timestamp
+  var taskid = new Date().getTime();
+  //write data to firebase using firebase.database object
+  //write tasks to "tasks" branch, use userid as key and taskid as key
+  //for each task
+  var dataref = 'tasks/' + app.userid + '/' + taskid;
+  var dataobj = {
+    taskname: task,
+    status: 0
+  };
+  writeData(dataref, dataobj);
+}
+
+function writeData(ref, obj) {
+  firebase.database().ref(ref).set(obj)
+    .then(function (result) {
+      console.log(result);
     });
 }
 
-function readData(id){
-    firebase.database().ref('tasks/'+id).once('value')
-    .then(function(snapshot) {
-        let tasks = snapshot.val();
-        let taskcount = Object.keys(tasks).length;
-        console.log(Object.keys(tasks));
+function readTasks(id) {
+  //create reference to the branch with tasks
+  firebase.database().ref('tasks/' + id).once('value')
+    .then(function (snapshot) {
+      var tasks = snapshot.val();
+      var taskcount = Object.keys(tasks).length;
+      renderTasks(tasks);
+    })
+    .catch(function (error) {
+      console.log(error.message);
     });
 }
 
-function renderData(dataobj){
-
+function renderTasks(dataobj) {
+  //get the length of tasks
+  var count = Object.keys(dataobj).length;
+  var keys = Object.keys(dataobj);
+  var vals = Object.values(dataobj);
+  //loop through the tasks
+  var i=0;
+  for(i=0;i<count;i++){
+    var task = keys[i];
+    console.log(task);
+    console.log(vals[i].taskname);
+    //console.log(dataobj.task.taskname);
+  }
 }
-

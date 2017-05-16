@@ -1,115 +1,171 @@
-html,body{
-	height: 100%;
-}
-body{
-	margin: 0;
-	font-family: arial,sans-serif;
-	overflow: hidden;
-	position:relative;
-}
-.app-view{
-	height: inherit;
-	background-color:aqua;
-	display: flex;
-	flex-direction: column;
-	align-items: stretch;
-}
-header{
-	background-color:bisque;
-	display: flex;
-	justify-content: space-between;
-	box-sizing: border-box;
-	padding:0 5px;
-	min-height: 50px;
-}
-.logo{
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width:48px;
-	height: 48px;
-	color:white;
-	background-color: black;
-	margin:5px 0;
-}
-#app-navigation{
-	display: flex;
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-#app-navigation a{
-	text-decoration: none;
-	display: block;
-	padding:12px;
-	color:inherit;
-}
-.content{
-	background-color: aliceblue;
-	flex:auto;
-}
-.footer{
-	height: 50px;
-}
-#task-form{
-	display: flex;
-}
-#task-form input{
-	flex:auto;
-	box-sizing: border-box;
-	padding:5px;
-	font-size: 18px;
-}
-#task-form button{
-	width:50px;
-	height: 50px;
+html,
+body {
+  height: 100%;
 }
 
-.overlay{
-	position:absolute;
-	top:0;
-	left:0;
-	width:100%;
-	height:100%;
-	background-color:rgba(0,0,0,0.4);
-	display: flex;
-	align-items: center;
-	justify-content: center;
+body {
+  margin: 0;
+  font-family: arial, sans-serif;
+  overflow: hidden;
+  position: relative;
 }
+
+.app-view {
+  height: inherit;
+  background-color: aqua;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+header {
+  background-color: bisque;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 0 5px;
+  min-height: 50px;
+}
+
+.notifications{
+  display:flex;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  color: white;
+  background-color: hsl(33,90%,60%);
+  margin: 5px 0;
+}
+
+#app-navigation {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color:#333;
+}
+
+#app-navigation li{
+  height: inherit;
+}
+
+.nav-button{
+  text-decoration: none;\
+  color:inherit;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  height: 100%;
+  box-sizing: border-box;
+  color:#333333;
+}
+
+.content {
+  background-color: aliceblue;
+  flex: auto;
+}
+
+.footer {
+  height: 50px;
+}
+
+#task-form {
+  display: flex;
+}
+
+#task-form input {
+  flex: auto;
+  box-sizing: border-box;
+  padding: 5px;
+  font-size: 18px;
+}
+
+#task-form button {
+  width: 50px;
+  height: 50px;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
 /*signup and login forms*/
-.credentials{
-	max-width:480px;
-	min-width:360px;
-	margin:0 auto;
-	background-color:white;
-	padding:22px 15px;
-	font-size:22px;
+
+.credentials {
+  max-width: 480px;
+  min-width: 360px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 0 0 10px 0px;
+  font-size: 18px;
+  border-radius:10px;
+  color:#888;
+	overflow:hidden;
 }
-.credentials label{
-	display: block;
-	width:100%;
-	margin:15px 0;
+.credentials h2{
+  text-align: center;
+  margin:0;
+  padding:22px 10px 22px 10px;
+  font-size:20px;
+	background-color:#dddddd;
+	font-weight: 200;
+	color:#666666;
+}
+.credentials-content{
+  margin:0 10px;
 	box-sizing: border-box;
 }
-.credentials input{
-	display: block;
-	width:100%;
-	margin:10px 0;
-	padding:5px;
-	font-size:16px;
-	box-sizing: border-box;
-}
-.credentials button{
-	display: block;
-	width:150px;
-	margin: 0 auto;
-	padding:12px;
-	background-color: black;
-	color:white;
-	border:1px solid black;
-	border-radius: 6px;
+.credentials label {
+  display: block;
+  width: 100%;
+  margin: 15px 0 5px 0;
+  box-sizing: border-box;
 }
 
-.hide{
-	display:none;
+.credentials input {
+  display: block;
+  width: 100%;
+  margin: 5px 0 15px 0;
+  padding: 10px 5px;
+  font-size: 18px;
+	border:1px solid #cccccc;
+  border-radius:4px;
+  box-sizing: border-box;
+}
+
+.credentials button {
+  display: block;
+  width: 150px;
+	font-size:16px;
+  margin: 0 auto;
+  padding: 12px;
+  background-color: linear-gradient(#cccccc,#dddddd);
+  color: #333333;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+}
+.alt-link{
+	display: block;
+	margin-top:20px;
+	padding:10px;
+	margin:5px 0;
+	text-decoration: none;
+}
+.hide {
+  display: none;
 }
