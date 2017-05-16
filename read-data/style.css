@@ -42,6 +42,7 @@ header{
 	text-decoration: none;
 	display: block;
 	padding:12px;
+	color:inherit;
 }
 .content{
 	background-color: aliceblue;
@@ -107,4 +108,8 @@ header{
 	color:white;
 	border:1px solid black;
 	border-radius: 6px;
+}
+
+.hide{
+	display:none;
 }
