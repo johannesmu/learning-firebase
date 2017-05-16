@@ -178,3 +178,34 @@ header {
 .hide {
   display: none;
 }
+
+/*task list*/
+#task-list{
+  list-style:none;
+  margin:0;
+  padding:0;
+}
+.task{
+  padding:10px 5px;
+  background-color:white;
+  border-bottom:1px solid #cccccc;
+  color:#666666;
+  font-size:22px;
+  display:flex;
+  flex-direction:row;
+  justify-content:space-between;
+}
+.task-buttons button{
+  background-color:transparent;
+  color:#bbbbbb;
+  border:transparent;
+  height:100%;
+  font-size:18px;
+}
+.task-buttons{
+  width:24px;
+  border-left:1px solid #ccc;
+}
+.task-name{
+  flex:auto;
+} 

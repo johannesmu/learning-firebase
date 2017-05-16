@@ -7,6 +7,7 @@ var app = {
   view: ''
 }
 
+//----------CONTROLLING FORMS
 function formController() {
   if (app.userid) {
     //hide both forms
@@ -17,7 +18,7 @@ function formController() {
     app.signup.classList.add('hide');
   }
 }
-
+//hide and show sign up and sign in
 function toggleForms() {
   var forms = document.getElementsByClassName('auth-ui');
   for (i = 0; i < forms.length; i++) {
@@ -28,20 +29,7 @@ function toggleForms() {
     }
   }
 }
-
-function menuController() {
-  //if user is logged in
-  if (app.userid) {
-    //show logout link
-    document.getElementById('logoutbtn').classList.remove('hide');
-    document.getElementById('profilebtn').classList.remove('hide');
-  } else {
-    //hide logout link
-    document.getElementById('logoutbtn').classList.add('hide');
-    document.getElementById('profilebtn').classList.add('hide');
-  }
-}
-
+//hide and show profile form
 function toggleProfile(){
   if(app.userid){
     if(app.profile.classList.contains('hide')){
@@ -55,7 +43,7 @@ function toggleProfile(){
   }
  
 }
-
+//populate profile form
 function getProfileData(){
   if(app.userid){
     document.getElementById('profile-email').value = app.useremail;
@@ -63,6 +51,21 @@ function getProfileData(){
     document.getElementById('profile-name').value = app.username;
   }
 }
+//----------------MAIN MENU
+function menuController() {
+  //if user is logged in
+  if (app.userid) {
+    //show logout link
+    document.getElementById('logoutbtn').classList.remove('hide');
+    document.getElementById('profilebtn').classList.remove('hide');
+  } else {
+    //hide logout link
+    document.getElementById('logoutbtn').classList.add('hide');
+    document.getElementById('profilebtn').classList.add('hide');
+  }
+}
+
+//-----------INITIALIZE APP UI
 
 window.addEventListener('load', onWindowLoad);
 
@@ -127,6 +130,7 @@ function bindUI() {
   });
 }
 
+//-------------AUTHENTICATION
 function signUserUp(event) {
   //stop the form from refreshing page by cancelling the event
   event.preventDefault();
@@ -191,19 +195,64 @@ function logUserOut() {
     notifyUser(error.message);
   });
 }
+//read username from firebase
 function getUserName(userid){
   firebase.database().ref('users/' + userid).once('value')
   .then(function (snapshot) {
     var username = snapshot.val().name;
     //greet user by printing username in notifications area
-    notifyUser("Hello " + username);
+    notifyUser(username);
     //set username in app
     app.username = username;
   });
 }
-
+//display notifications
 function notifyUser(msg) {
   document.getElementById('message').innerHTML = msg;
+}
+
+//read tasks from Firebase
+function readTasks(id) {
+  //create reference to the branch with tasks
+  firebase.database().ref('tasks/' + id).once('value')
+    .then(function (snapshot) {
+      var tasks = snapshot.val();
+      var taskcount = Object.keys(tasks).length;
+      renderTasks(tasks);
+    })
+    .catch(function (error) {
+      console.log(error.message);
+    });
+}
+
+//render task from Firebase to the UI
+function renderTasks(dataobj) {
+  //empty task list
+  emptyTasks();
+  //get the length of tasks
+  var count = Object.keys(dataobj).length;
+  var keys = Object.keys(dataobj);
+  var vals = Object.values(dataobj);
+  //loop through the tasks
+  var i=0;
+  for(i=0;i<count;i++){
+    //keys for task is the timestamp, used as id on display
+    var taskid = keys[i];
+    var name = vals[i].taskname;
+    var status = vals[i].status;
+    //clone the template
+    var template = document.getElementById('task-template').content.cloneNode(true);
+    template.querySelector('li .task-name').innerText = name;
+    template.querySelector('li .task-buttons button').setAttribute('data-id', taskid)
+    template.querySelector('li').setAttribute('id',taskid);
+    template.querySelector('li').setAttribute('data-status',status);
+    document.getElementById("task-list").appendChild(template);
+  }
+}
+//empty the task list (on logout and when user is not signed in)
+function emptyTasks(){
+  //empty the task list
+  document.getElementById('task-list').innerHTML='';
 }
 
 function addTask(event) {
@@ -231,46 +280,4 @@ function writeData(ref, obj) {
     .then(function (result) {
       console.log(result);
     });
-}
-
-function readTasks(id) {
-  //create reference to the branch with tasks
-  firebase.database().ref('tasks/' + id).once('value')
-    .then(function (snapshot) {
-      var tasks = snapshot.val();
-      var taskcount = Object.keys(tasks).length;
-      renderTasks(tasks);
-    })
-    .catch(function (error) {
-      console.log(error.message);
-    });
-}
-
-function renderTasks(dataobj) {
-  //empty task list
-  emptyTasks();
-  //get the length of tasks
-  var count = Object.keys(dataobj).length;
-  var keys = Object.keys(dataobj);
-  var vals = Object.values(dataobj);
-  //loop through the tasks
-  var i=0;
-  for(i=0;i<count;i++){
-    var task = keys[i];
-    //console.log(task);
-    //console.log(vals[i].taskname);
-    var name = vals[i].taskname;
-    var status = vals[i].status;
-    console.log(name +" / "+status);
-    //clone the template
-    var template = document.getElementById('task-template').content.cloneNode(true);
-    template.querySelector('li').innerText = name;
-    template.querySelector('li').setAttribute('id',task);
-    template.querySelector('li').setAttribute('data-status',status);
-    document.getElementById("task-list").appendChild(template);
-  }
-}
-function emptyTasks(){
-  //empty the task list
-  document.getElementById('task-list').innerHTML='';
 }
