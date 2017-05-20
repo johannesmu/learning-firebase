@@ -34,7 +34,9 @@ function toggleProfile(){
   if(app.userid){
     if(app.profile.classList.contains('hide')){
       app.profile.classList.remove('hide');
+      //populate the form fields
       getProfileData();
+      //add listener for the close button
       document.getElementById('profile-close').addEventListener('click',toggleProfile);
     }
     else{
@@ -107,6 +109,10 @@ function bindUI() {
     link = formtoggles[t].getElementsByClassName('form-toggle');
     link[0].addEventListener('click', toggleForms);
   }
+  
+  //add listener to list
+  var list = document.getElementById('task-list');
+  list.addEventListener('click',manageList);
 
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
@@ -243,7 +249,8 @@ function renderTasks(dataobj) {
     //clone the template
     var template = document.getElementById('task-template').content.cloneNode(true);
     template.querySelector('li .task-name').innerText = name;
-    template.querySelector('li .task-buttons button').setAttribute('data-id', taskid)
+    template.querySelector('li .task-buttons button[data-function="task-delete"]').setAttribute('data-id', taskid);
+    template.querySelector('li .task-buttons button[data-function="task-done"]').setAttribute('data-id', taskid);
     template.querySelector('li').setAttribute('id',taskid);
     template.querySelector('li').setAttribute('data-status',status);
     document.getElementById("task-list").appendChild(template);
@@ -280,4 +287,57 @@ function writeData(ref, obj) {
     .then(function (result) {
       console.log(result);
     });
+}
+
+function deleteData(ref){
+  firebase.database().ref(ref).remove()
+  .then(function (result){
+    console.log(result);
+  })
+}
+
+//handle clicks on our list
+function manageList(event){
+  var target = event.target;
+  //if the done button is clicked
+  if(target.getAttribute('data-function')=='task-done'){
+    //toggle task status
+    var id = target.getAttribute('data-id');
+    toggleTaskStatus(id);
+  }
+  if(target.getAttribute('data-function')=='task-delete'){
+    //
+    var id = target.getAttribute('data-id');
+    deleteTask(id);
+  }
+}
+
+function toggleTaskStatus(id){
+  var taskelement = document.getElementById(id);
+  var taskname = taskelement.querySelector('.task-name').innerText;
+  var status = 0;
+  if(taskelement.getAttribute('data-status')==1){
+    taskelement.setAttribute('data-status',0);
+    status = 0;
+  }
+  else{
+    taskelement.setAttribute('data-status',1);
+    status = 1;
+  }
+  //---update status of task in firebase
+  //create obj
+  var obj = {"taskname":taskname,"status":status};
+  //set reference
+  var ref = 'tasks/'+app.userid+'/'+id;
+  writeData(ref,obj);
+}
+
+function deleteTask(id){
+  //get a reference to the task
+  var taskelement = document.getElementById(id);
+  console.log(taskelement);
+  taskelement.parentNode.removeChild(taskelement);
+  //get a reference to firebase data
+  var ref = 'tasks/'+app.userid+'/'+id;
+  deleteData(ref);
 }

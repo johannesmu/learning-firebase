@@ -195,17 +195,37 @@ header {
   flex-direction:row;
   justify-content:space-between;
 }
+.task[data-status="1"]{
+  text-decoration: line-through;
+  color:lightblue;
+}
 .task-buttons button{
   background-color:transparent;
   color:#bbbbbb;
   border:transparent;
   height:100%;
   font-size:18px;
+  flex:1 0 0;
+  transition: width 1s;
+}
+.task[data-status="1"] button[data-function="task-done"]{
+  overflow:hidden;
+  padding:0;
+  width:0;
+}
+.task[data-status="1"] .task-buttons{
+  width:40px;
+}
+.task[data-status="1"] button{
+  color:lightblue;
 }
 .task-buttons{
-  width:24px;
+  width:80px;
   border-left:1px solid #ccc;
+  display:flex;
+  transition:width 0.5s;
 }
 .task-name{
   flex:auto;
+  word-break: break-all;
 } 
