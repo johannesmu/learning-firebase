@@ -14,6 +14,7 @@ You can download the completed app in "read-write-data" folder. So far, it is ab
 - Read tasks the user has set in the database
 - Write new tasks to the database
 - Render tasks from the database using an HTML <template> tag.
+
 Make sure to read the sections below.
 
 
@@ -28,3 +29,5 @@ Have fun testing!
 
 # To do 
 - redesign for multiple tabs (view deleted tasks)
+- render done task in a separate tabs
+- add friends to share tasks
