@@ -13,8 +13,9 @@ You can download the completed app in "read-write-data" folder. So far, it is ab
 - Read tasks the user has in the database
 - Write new tasks to the database
 - Render tasks from the database using an HTML <template> tag.
+
 ## Download
-You can download the completed app [here](https://github.com/johannesmu/learning-firebase/tree/master/read-write-data). To be able to see the data structure, you need to:
+You can download the completed app [here](https://github.com/johannesmu/learning-firebase/archive/prealphaV0.3.zip). To be able to see the data structure, you need to:
 - Sign up for a Firebase account [here](https://firebase.google.com)
 - Create your own Firebase app
 - Open the app and click on "Add firebase to your web app" button
