@@ -77,6 +77,7 @@ function onWindowLoad() {
   bindUI();
 }
 
+//------BIND listeners to UI elements
 function bindUI() {
   //get a reference to the sign in form and store it in global app object
   //for easy access
@@ -267,6 +268,7 @@ function addTask(event) {
   event.preventDefault();
   //get the value of the input
   var task = document.getElementById('task-input').value;
+  console.log(task);
   //empty the form
   event.target.reset();
   //create id for task using timestamp
@@ -279,7 +281,12 @@ function addTask(event) {
     taskname: task,
     status: 0
   };
-  writeData(dataref, dataobj);
+  // because adding a task requires a callback to refresh the list of task, we create its own database function instead of using writeData()
+  //writeData(dataref, dataobj);
+  firebase.database().ref(dataref).set(dataobj)
+  .then(function (result) {
+    readTasks(app.userid);
+  });
 }
 
 function writeData(ref, obj) {

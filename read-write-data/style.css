@@ -179,7 +179,7 @@ header {
   display: none;
 }
 
-/*task list*/
+/*task list and task items*/
 #task-list{
   list-style:none;
   margin:0;
@@ -195,37 +195,44 @@ header {
   flex-direction:row;
   justify-content:space-between;
 }
-.task[data-status="1"]{
-  text-decoration: line-through;
-  color:lightblue;
-}
-.task-buttons button{
-  background-color:transparent;
-  color:#bbbbbb;
-  border:transparent;
-  height:100%;
-  font-size:18px;
-  flex:1 0 0;
-  transition: width 1s;
-}
-.task[data-status="1"] button[data-function="task-done"]{
-  overflow:hidden;
-  padding:0;
-  width:0;
-}
-.task[data-status="1"] .task-buttons{
-  width:40px;
-}
-.task[data-status="1"] button{
-  color:lightblue;
-}
+/*container for buttons next to each task*/
 .task-buttons{
   width:80px;
   border-left:1px solid #ccc;
   display:flex;
-  transition:width 0.5s;
 }
+/*container for task name*/
 .task-name{
   flex:auto;
   word-break: break-all;
 } 
+/*text for task that has been marked as done*/
+.task[data-status="1"] .task-name{
+  text-decoration: line-through;
+  color:lightblue;
+}
+/*buttons next to each task*/
+.task-buttons button{
+  background-color:transparent;
+  color:#888;
+  border:transparent;
+  height:100%;
+  font-size:18px;
+  outline:none;
+  flex:1 0 0;
+  transition: width 1s;
+}
+/*buttons for task that has been marked as done*/
+.task[data-status="1"] button{
+  color:lightblue;
+  text-decoration:none;
+}
+
+/*the tick button next to task that has been marked as done*/
+.task[data-status="1"] button[data-function="task-done"]{
+  overflow:hidden;
+  color:#ccc;
+  text-decoration:none;
+}
+
+
