@@ -4,7 +4,6 @@ Learning about how to implement Firebase data using the web API.
 - Sign a user in using email and password and use an observer
 - Write data to Firebase after authentication
 - Read and write data to Firebase
-Read about features below
 
 # Completed App
 ## Features
@@ -14,9 +13,6 @@ You can download the completed app in "read-write-data" folder. So far, it is ab
 - Read tasks the user has set in the database
 - Write new tasks to the database
 - Render tasks from the database using an HTML <template> tag.
-
-Make sure to read the sections below.
-
 
 ## Download
 You can download the completed app [here](https://github.com/johannesmu/learning-firebase/archive/prealphaV0.3.zip). To be able to see the data structure, you need to:
